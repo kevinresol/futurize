@@ -5,7 +5,7 @@ import haxe.macro.Context;
 using tink.MacroApi;
 
 class Futurize {
-	public static function build(meta:String) {
+	public static function build(meta:String = ":futurize") {
 		var transformer = matchMeta.bind(_, meta);
 		return [for(field in Context.getBuildFields()) {
 			switch field.kind {

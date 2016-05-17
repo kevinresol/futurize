@@ -15,8 +15,8 @@ class AnyClass {
 		@:futurize functionWithJsStyleCallback($cb).handle(function(o) trace(o));
 	}
 	
-	function functionWithJsStyleCallback(cb:String->Void) {
-		cb('Error');
+	function functionWithJsStyleCallback(cb:String->String->Void) {
+		cb('Error', null);
 	}
 }
 ```

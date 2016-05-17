@@ -64,6 +64,22 @@ class Test extends BuddySuite {
 					default: fail('something wrong');
 				});
 			});
+			
+			it("Test functions with other params before", function(done) {
+				var future = @:futurize withOtherParamsBefore(100, $cb0);
+				future.handle(function(o) switch o {
+					case Failure(err): done();
+					default: fail('something wrong');
+				});
+			});
+			
+			it("Test functions with other params after", function(done) {
+				var future = @:futurize withOtherParamsAfter($cb0, 100);
+				future.handle(function(o) switch o {
+					case Failure(err): done();
+					default: fail('something wrong');
+				});
+			});
 		});
 	}
 	
@@ -82,5 +98,12 @@ class Test extends BuddySuite {
 	}
 	function test2(cb:String->String->String->Void) {
 		Timer.delay(cb.bind("Error", null, null), 100);
+	}
+	
+	function withOtherParamsAfter(cb:String->Void, interval:Int):Void {
+		Timer.delay(cb.bind("Error"), interval);
+	}
+	function withOtherParamsBefore(interval:Int, cb:String->Void):Void {
+		Timer.delay(cb.bind("Error"), interval);
 	}
 }

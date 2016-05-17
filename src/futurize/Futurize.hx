@@ -38,13 +38,13 @@ class Futurize {
 			
 			case macro $i{"$cb0"}:
 				status.replacedCallback = true;
-				return macro function(e) cb(e != null ? Failure(tink.core.Error.withData('Error', e)) : Success(tink.core.Noise.Noise));
+				return macro function(e) cb(e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(tink.core.Noise.Noise));
 			case macro $i{"$cb" | "$cb1"}:
 				status.replacedCallback = true;
-				return macro function(e, d) cb(e != null ? Failure(tink.core.Error.withData('Error', e)) : Success(d));
+				return macro function(e, d) cb(e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(d));
 			case macro $i{"$cb2"}:
 				status.replacedCallback = true;
-				return macro function(e, d1, d2) cb(e != null ? Failure(tink.core.Error.withData('Error', e)) : Success(new tink.core.Pair(d1, d2)));
+				return macro function(e, d1, d2) cb(e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(new tink.core.Pair(d1, d2)));
 			case e: e;
 		}
 	}

@@ -1,0 +1,7 @@
+{
+  "name": "futurize",
+  "classPath": "src",
+  "dependencies": {
+      "tink_macro": ""
+  }
+}

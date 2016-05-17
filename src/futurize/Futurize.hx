@@ -33,20 +33,25 @@ class Futurize {
 	}
 	
 	static function replaceCallback(e:Expr, status) {
-		return if(status.replacedCallback && !status.wrapped && e.toString().indexOf('__futurize_cb') != -1) {
-			status.wrapped = true;
-			macro @:pos(e.pos) tink.core.Future.async(function(__futurize_cb) $e);
-		} else switch e {
-			case macro $i{"$cb0"}:
+		return switch [status.replacedCallback, status.wrapped, e] {
+			
+			case [true, false, _] if(e.toString().indexOf('__futurize_cb') != -1):
+				status.wrapped = true;
+				macro @:pos(e.pos) tink.core.Future.async(function(__futurize_cb) $e);
+			
+			case [false, _, macro $i{"$cb0"}]:
 				status.replacedCallback = true;
 				macro @:pos(e.pos) function(e) __futurize_cb(e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(tink.core.Noise.Noise));
-			case macro $i{"$cb" | "$cb1"}:
+			
+			case [false, _, macro $i{"$cb" | "$cb1"}]:
 				status.replacedCallback = true;
 				macro @:pos(e.pos) function(e, d) __futurize_cb(e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(d));
-			case macro $i{"$cb2"}:
+			
+			case [false, _, macro $i{"$cb2"}]:
 				status.replacedCallback = true;
 				macro @:pos(e.pos) function(e, d1, d2) __futurize_cb(e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(new tink.core.Pair(d1, d2)));
-			case e: e;
+			
+			default: e;
 		}
 	}
 }

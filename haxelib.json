@@ -1,7 +1,14 @@
 {
   "name": "futurize",
+  "url": "https://github.com/kevinresol/futurize",
+  "license": "MIT",
   "classPath": "src",
+  "description": "Transform js-style callbacks into tink_core Futures",
+  "releasenote": "Initial Release",
+  "version": "0.1.0",
+  "tags": ["tink", "future", "helper"],
+  "contributors": ["kevinresol"],
   "dependencies": {
-      "tink_macro": ""
+    "tink_macro": ""
   }
 }

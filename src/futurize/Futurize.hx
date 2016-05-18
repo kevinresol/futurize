@@ -27,7 +27,13 @@ class Futurize {
 					replacedCallback: false,
 					wrapped: false,
 				}
-				expr.transform(replaceCallback.bind(_, status));
+				var ret = expr.transform(replaceCallback.bind(_, status));
+				
+				if(!status.replacedCallback || !status.wrapped) 
+					Context.error("\"$cb\" placeholder not found, maybe something's wrong?", e.pos);
+				
+				ret;
+				
 			case _: e;
 		}
 	}

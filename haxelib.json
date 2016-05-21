@@ -4,8 +4,8 @@
   "license": "MIT",
   "classPath": "src",
   "description": "Transform js-style callbacks into tink_core Futures",
-  "releasenote": "Initial Release",
-  "version": "0.1.0",
+  "releasenote": "Allow specifying custom handler",
+  "version": "1.0.0",
   "tags": ["tink", "future", "helper"],
   "contributors": ["kevinresol"],
   "dependencies": {

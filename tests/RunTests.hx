@@ -2,4 +2,7 @@ package;
 
 import buddy.*;
 
-class RunTests implements Buddy<[Test]>{}
+class RunTests implements Buddy<[
+	Test,
+	TestCustom,
+]>{}

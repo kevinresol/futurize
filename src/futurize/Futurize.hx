@@ -48,7 +48,7 @@ class Futurize {
 			case [false, _, macro $i{"$cb0"}]:
 				status.replacedCallback = true;
 				var cb = switch callback {
-					case macro null: macro e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(tink.core.Noise.Noise);
+					case macro null: macro e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(tink.core.Noise.Noise.Noise);
 					default: macro $callback.cb0(e);
 				}
 				macro @:pos(e.pos) function(e) __futurize_cb($cb);

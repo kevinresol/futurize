@@ -4,8 +4,8 @@
   "license": "MIT",
   "classPath": "src",
   "description": "Transform js-style callbacks into tink_core Futures",
-  "releasenote": "Allow specifying custom handler",
-  "version": "1.0.0",
+  "releasenote": "Fix the way to get a Noise enum value",
+  "version": "1.0.1",
   "tags": ["tink", "future", "helper"],
   "contributors": ["kevinresol"],
   "dependencies": {

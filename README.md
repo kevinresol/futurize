@@ -16,7 +16,12 @@ class AnyClass {
 	}
 	
 	function functionWithJsStyleCallback(cb:String->String->Void) {
-		cb('Error', null);
+		try {
+			// do some work...
+			cb(null, 'Success');
+		} catch (e:Dynamic) {
+			cb('Error', null);
+		}
 	}
 }
 ```

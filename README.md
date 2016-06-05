@@ -27,9 +27,9 @@ class AnyClass {
 ```
 
 Placeholders:
-- `$cb0`: callback that returns no data, i.e. `function(err) {}`. Transforms into a `Surprise<Error, Noise>`
-- `$cb` or `$cb1`: callback that returns one data, i.e. `function(err, data) {}`. Transforms into a `Surprise<Error, T>`
-- `$cb2`: callback that returns two data, i.e. `function(err, data1, data2) {}`. Transforms into a `Surprise<Error, Pair<T1, T2>>`
+- `$cb0`: callback that returns no data, i.e. `function(err) {}`. Transforms into a `Surprise<Noise, Error>`
+- `$cb` or `$cb1`: callback that returns one data, i.e. `function(err, data) {}`. Transforms into a `Surprise<T, Error>`
+- `$cb2`: callback that returns two data, i.e. `function(err, data1, data2) {}`. Transforms into a `Surprise<Pair<T1, T2>, Error>`
 	
 ## Custom handlers
 ```haxe

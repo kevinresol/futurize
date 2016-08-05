@@ -48,24 +48,24 @@ class Futurize {
 			case [false, _, macro $i{"$cb0"}]:
 				status.replacedCallback = true;
 				var cb = switch callback {
-					case macro null: macro e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(tink.core.Noise.Noise.Noise);
-					default: macro $callback.cb0(e);
+					case macro null: macro @:pos(e.pos) e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(tink.core.Noise.Noise.Noise);
+					default: macro @:pos(e.pos) $callback.cb0(e);
 				}
 				macro @:pos(e.pos) function(e) __futurize_cb($cb);
 			
 			case [false, _, macro $i{"$cb" | "$cb1"}]:
 				status.replacedCallback = true;
 				var cb = switch callback {
-					case macro null: macro e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(d);
-					default: macro $callback.cb1(e, d);
+					case macro null: macro @:pos(e.pos) e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(d);
+					default: macro @:pos(e.pos) $callback.cb1(e, d);
 				}
 				macro @:pos(e.pos) function(e, d) __futurize_cb($cb);
 			
 			case [false, _, macro $i{"$cb2"}]:
 				status.replacedCallback = true;
 				var cb = switch callback {
-					case macro null: macro e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(new tink.core.Pair(d1, d2));
-					default: macro $callback.cb2(e, d1, d2);
+					case macro null: macro @:pos(e.pos) e != null ? tink.core.Outcome.Failure(tink.core.Error.withData('Error', e)) : tink.core.Outcome.Success(new tink.core.Pair(d1, d2));
+					default: macro @:pos(e.pos) $callback.cb2(e, d1, d2);
 				}
 				macro @:pos(e.pos) function(e, d1, d2) __futurize_cb($cb);
 			

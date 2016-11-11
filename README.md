@@ -33,7 +33,7 @@ Placeholders:
 	
 ## Custom handlers
 ```haxe
-@:build(futurize.Futurize.build(":futurize"), MyHandler)
+@:build(futurize.Futurize.build(":futurize", MyHandler))
 
 class MyHandler {
 	public static inline function cb0(e)

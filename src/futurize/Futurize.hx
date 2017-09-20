@@ -43,7 +43,7 @@ class Futurize {
 			
 			case [true, false, _] if(e.toString().indexOf('__futurize_cb') != -1):
 				status.wrapped = true;
-				macro @:pos(e.pos) tink.core.Future.async(function(__futurize_cb) $e);
+				macro @:pos(e.pos) tink.core.Promise.lift(tink.core.Future.async(function(__futurize_cb) $e));
 			
 			case [false, _, macro $i{"$cb0"}]:
 				status.replacedCallback = true;

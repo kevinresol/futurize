@@ -1,8 +1,13 @@
 package;
 
-import buddy.*;
+import tink.unit.*;
+import tink.testrunner.*;
 
-class RunTests implements Buddy<[
-	Test,
-	TestCustom,
-]>{}
+class RunTests {
+	static function main() {
+		Runner.run(TestBatch.make([
+			new Test(),
+			new TestCustom(),
+		]));
+	}
+}

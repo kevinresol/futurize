@@ -1,86 +1,59 @@
 package;
 
+import tink.unit.Assert.assert;
 import haxe.Timer;
-import buddy.*;
-using buddy.Should;
 using tink.CoreApi;
 
 @:build(futurize.Futurize.build(":futurize"))
-class Test extends BuddySuite {
-	public function new() {
-		describe("", {
-			it("With intermediate future variable", function(done) {
-				var future = @:futurize a().test0($cb0);
-				future.handle(function(o) switch o {
-					case Failure(err): done();
-					default: fail('something wrong');
-				});
-			});
+class Test  {
+	public function new() {}
+		
+	public function withIntermediateFutureVariable() {
+		var future = @:futurize a().test0($cb0);
+		return future.map(function(o) return assert(!o.isSuccess()));
+		
+	}
 			
-			it("Without intermediate future variable", function(done) {
-				@:futurize a().test0($cb0).handle(function(o) switch o {
-					case Failure(err): done();
-					default: fail('something wrong');
-				});
-			});
+	public function withoutIntermediateFutureVariable() {
+		return @:futurize a().test0($cb0)
+			.map(function(o) return assert(!o.isSuccess()));
+	}
 			
-			it("Test multiple metas", function(done) {
-				@:futurize @other a().test0($cb0).handle(function(o) switch o {
-					case Failure(err): done();
-					default: fail('something wrong');
-				});
-			});
+	public function multipleMetas() {
+		return @:futurize @other a().test0($cb0)
+			.map(function(o) return assert(!o.isSuccess()));
+	}
 			
-			it("Test map", function(done) {
-				var future = @:futurize @other a().test0($cb0) >>
-					function(_) return @:futurize test0($cb0);
+	// public function map() {
+	// 	var future = @:futurize @other a().test0($cb0) >>
+	// 		function(_) return @:futurize test0($cb0);
 					
-				future.handle(function(o) switch o {
-					case Failure(err): done();
-					default: fail('something wrong');
-				});
-			});
+	// 	return future.map(function(o) return assert(!o.isSuccess()));
+	// }
 			
-			it("Test cb", function(done) {
-				var future = @:futurize a().test1($cb);
-				future.handle(function(o) switch o {
-					case Failure(err): done();
-					default: fail('something wrong');
-				});
-			});
+	public function cb() {
+		var future = @:futurize a().test1($cb);
+		return future.map(function(o) return assert(!o.isSuccess()));
+	}
 			
-			it("Test cb1", function(done) {
-				var future = @:futurize a().test1($cb1);
-				future.handle(function(o) switch o {
-					case Failure(err): done();
-					default: fail('something wrong');
-				});
-			});
+	public function cb1() {
+		var future = @:futurize a().test1($cb1);
+		return future.map(function(o) return assert(!o.isSuccess()));
+	}
 			
-			it("Test cb2", function(done) {
-				var future = @:futurize a().test2($cb2);
-				future.handle(function(o) switch o {
-					case Failure(err): done();
-					default: fail('something wrong');
-				});
-			});
+	public function cb2() {
+		var future = @:futurize a().test2($cb2);
+		return future.map(function(o) return assert(!o.isSuccess()));
+	}
+	
+	public function withParamsBefore() {		
+		var future = @:futurize withOtherParamsBefore(100, $cb0);
+		return future.map(function(o) return assert(!o.isSuccess()));
+	}
 			
-			it("Test functions with other params before", function(done) {
-				var future = @:futurize withOtherParamsBefore(100, $cb0);
-				future.handle(function(o) switch o {
-					case Failure(err): done();
-					default: fail('something wrong');
-				});
-			});
-			
-			it("Test functions with other params after", function(done) {
-				var future = @:futurize withOtherParamsAfter($cb0, 100);
-				future.handle(function(o) switch o {
-					case Failure(err): done();
-					default: fail('something wrong');
-				});
-			});
-		});
+	public function withParamsAfter() {		
+		var future = @:futurize withOtherParamsAfter($cb0, 100);
+		return future.map(function(o) return assert(!o.isSuccess()));
 	}
 	
 	function a()

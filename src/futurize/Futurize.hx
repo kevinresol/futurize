@@ -1,13 +1,56 @@
 package futurize;
 
+import haxe.macro.Type;
 import haxe.macro.Expr;
 import haxe.macro.Context;
+import tink.SyntaxHub;
+
 using tink.MacroApi;
 
 class Futurize {
-	public static function build(meta:String = ":futurize", ?callback:Expr) {
-		var transformer = matchMeta.bind(_, meta, callback);
-		return [for(field in Context.getBuildFields()) {
+	public static function use() {
+		function appliesTo(m:MetaAccess) return m.has(':futurize');
+		SyntaxHub.classLevel.before(
+			function (_) return true,
+			function (c: ClassBuilder) {
+				if(c.target.name == 'CampaignResponse_Impl_') trace(c.target.meta.has(':futurize'));
+				if (c.target.isInterface && !appliesTo(c.target.meta))
+					return false;
+				
+				if (!appliesTo(c.target.meta)) {
+					for (i in c.target.interfaces)
+						if (appliesTo(i.t.get().meta)) {
+							applyTo(c);
+							return true;
+						}
+					var s = c.target.superClass;
+					while(s != null) {
+						var sc = s.t.get();
+						if(appliesTo(sc.meta)) {
+							applyTo(c);
+							return true;
+						}
+						s = sc.superClass;
+					}
+					return false;
+				}
+				else {
+					applyTo(c);
+					return true;
+				}
+			}
+		);
+	}
+	
+	static function applyTo(builder:ClassBuilder) {
+		var transformer = matchMeta.bind(_, [
+			':futurize' => macro null,
+			':promisify' => macro null,
+		],[
+			':futurize' => function(e) return macro @:pos(e.pos) tink.core.Future.async($e),
+			':promisify' => function(e) return macro @:pos(e.pos) tink.core.Future.asPromise(tink.core.Future.async($e)),
+		]);
+		return [for(field in builder) {
 			switch field.kind {
 				case FFun(func):
 					func.expr = func.expr.transform(transformer);
@@ -20,30 +63,32 @@ class Futurize {
 		}];
 	}
 	
-	static function matchMeta(e:Expr, meta:String, callback:Expr) {
+	static function matchMeta(e:Expr, callback:Map<String, Expr>, wrap:Map<String, Expr->Expr>) {
 		return switch e.expr {
-			case EMeta({name: name}, expr) if(name == meta):
+			case EMeta({name: name}, expr) if(callback.exists(name) && wrap.exists(name)):
 				var status = {
 					replacedCallback: false,
 					wrapped: false,
 				}
-				var ret = expr.transform(replaceCallback.bind(_, status, callback));
+				
+				var ret = expr.transform(replaceCallback.bind(_, status, callback.get(name), wrap.get(name)));
 				
 				if(!status.replacedCallback || !status.wrapped) 
-					Context.error("\"$cb\" placeholder not found, maybe something's wrong?", e.pos);
+					Context.error("Futurize: \"$cb\" placeholder not found, maybe something's wrong?", e.pos);
 				
+				// trace(ret.toString());
 				ret;
 				
 			case _: e;
 		}
 	}
 	
-	static function replaceCallback(e:Expr, status, callback:Expr) {
+	static function replaceCallback(e:Expr, status, callback:Expr, wrap:Expr->Expr) {
 		return switch [status.replacedCallback, status.wrapped, e] {
 			
 			case [true, false, _] if(e.toString().indexOf('__futurize_cb') != -1):
 				status.wrapped = true;
-				macro @:pos(e.pos) tink.core.Future.asPromise(tink.core.Future.async(function(__futurize_cb) $e));
+				wrap(macro @:pos(e.pos) function(__futurize_cb) $e);
 			
 			case [false, _, macro $i{"$cb0"}]:
 				status.replacedCallback = true;

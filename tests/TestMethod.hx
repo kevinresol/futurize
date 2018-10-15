@@ -2,7 +2,6 @@ package;
 
 import futurize.Futurize.futurize;
 import tink.unit.Assert.assert;
-import haxe.Timer;
 using tink.CoreApi;
 
 class TestMethod extends Base {
@@ -17,18 +16,11 @@ class TestMethod extends Base {
 			.map(function(o) return assert(!o.isSuccess()));
 	}
 			
-	public function multipleMetas() {
+	public function withMeta() {
 		return futurize(@other a().test0, $cb0)
 			.map(function(o) return assert(!o.isSuccess()));
 	}
-			
-	// public function map() {
-	// 	futurize(@other a, ).test0($cb0) >;
-	// 		function(_) return @:futurize test0($cb0);
-					
-	// 	return future.map(function(o) return assert(!o.isSuccess()));
-	// }
-			
+	
 	public function cb() {
 		var future = futurize(a().test1, $cb);
 		return future.map(function(o) return assert(!o.isSuccess()));

@@ -1,8 +1,6 @@
 package;
 
 import tink.unit.Assert.assert;
-import haxe.Timer;
-
 using tink.CoreApi;
 
 @:await
@@ -32,13 +30,6 @@ class TestAwait extends Base {
 			return assert(e.message == 'Error');
 		}
 	}
-			
-	// public function map() {
-	// 	var future = @:futurize @other a().test0($cb0) >>
-	// 		function(_) return @:futurize test0($cb0);
-					
-	// 	return future.map(function(o) return assert(true));
-	// }
 			
 	@:async public function cb() {
 		try {

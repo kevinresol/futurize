@@ -6,7 +6,8 @@ import tink.testrunner.*;
 class RunTests {
 	static function main() {
 		Runner.run(TestBatch.make([
-			new Test(),
+			new TestMeta(),
+			new TestMethod(),
 			new TestAwait(),
 			new TestCustom(),
 		]));

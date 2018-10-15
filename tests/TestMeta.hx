@@ -5,9 +5,7 @@ import haxe.Timer;
 using tink.CoreApi;
 
 @:build(futurize.Futurize.build(":futurize"))
-class Test  {
-	public function new() {}
-		
+class TestMeta extends Base {
 	public function withIntermediateFutureVariable() {
 		var future = @:futurize a().test0($cb0);
 		return future.map(function(o) return assert(!o.isSuccess()));
@@ -54,29 +52,5 @@ class Test  {
 	public function withParamsAfter() {		
 		var future = @:futurize withOtherParamsAfter($cb0, 100);
 		return future.map(function(o) return assert(!o.isSuccess()));
-	}
-	
-	function a()
-		return {
-			test0: test0,
-			test1: test1,
-			test2: test2,
-		};
-	
-	function test0(cb:String->Void) {
-		Timer.delay(cb.bind("Error"), 100);
-	}
-	function test1(cb:String->String->Void) {
-		Timer.delay(cb.bind("Error", null), 100);
-	}
-	function test2(cb:String->String->String->Void) {
-		Timer.delay(cb.bind("Error", null, null), 100);
-	}
-	
-	function withOtherParamsAfter(cb:String->Void, interval:Int):Void {
-		Timer.delay(cb.bind("Error"), interval);
-	}
-	function withOtherParamsBefore(interval:Int, cb:String->Void):Void {
-		Timer.delay(cb.bind("Error"), interval);
 	}
 }

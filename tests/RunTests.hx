@@ -7,6 +7,7 @@ class RunTests {
 	static function main() {
 		Runner.run(TestBatch.make([
 			new Test(),
+			new TestAwait(),
 			new TestCustom(),
 		]));
 	}

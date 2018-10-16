@@ -11,15 +11,13 @@ class Futurize {
 	public static macro function futurize(exprs:Array<Expr>) {
 		var pos = Context.currentPos();
 		var func = exprs.shift();
-		var numCallbackArgs = -1;
-		var custom = macro null;
 		
 		for(i in 0...exprs.length) {
 			switch exprs[i] {
 				case e = macro $i{ident} if(ident.startsWith("$cb")):
 					var cbNumArgs = ident == "$cb" ? 1 : Std.parseInt(ident.substr(3));
 					if(cbNumArgs == null || cbNumArgs > 2) e.pos.error('[futurize] Invalid "$$cb" notation');
-					exprs[i] = getCallback(cbNumArgs, custom, e.pos);
+					exprs[i] = getCallback(cbNumArgs, macro null, e.pos);
 					return macro tink.core.Future.asPromise(tink.core.Future.async(function(__futurize_cb) $func($a{exprs})));
 				case _:
 			}
@@ -53,7 +51,7 @@ class Futurize {
 				var ret = expr.transform(replaceCallback.bind(_, status, custom));
 				
 				if(!status.replacedCallback || !status.wrapped) 
-					Context.error("\"$cb\" placeholder not found, maybe something's wrong?", e.pos);
+					Context.error('[futurize] $$cb" placeholder not found, maybe something\'s wrong?', e.pos);
 				
 				ret;
 				
